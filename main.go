@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/xterminator24/bootdev-blog-gator/internal/config"
 )
@@ -9,17 +10,18 @@ import (
 func main() {
 	cfg, err := config.Read()
 	if err != nil {
-		panic(err)
+		log.Fatalf("error reading config: %v", err)
 	}
+	fmt.Printf("Read config: %+v\n", cfg)
 
-	if err := cfg.SetUser("xterminator24"); err != nil {
-		panic(err)
-	}
-
-	cfg2, err := config.Read()
+	err = cfg.SetUser("xterminator24")
 	if err != nil {
-		panic(err)
+		log.Fatalf("couldn't set current user: %v", err)
 	}
 
-	fmt.Println(cfg2)
+	cfg, err = config.Read()
+	if err != nil {
+		log.Fatalf("error reading config: %v", err)
+	}
+	fmt.Printf("Read config again: %+v\n", cfg)
 }
